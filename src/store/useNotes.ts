@@ -170,7 +170,6 @@ export const useNotes = create<NotesState>((set, get) => {
       const next = get().notes.map((n) =>
         n.id === id ? { ...n, deletedAt: Date.now(), archived: false } : n
       )
-      get().notes.forEach((n) => { if (n.id === id) persist({ ...n, deletedAt: Date.now(), archived: false }) })
       set((s) => ({
         notes: next,
         selectedNoteId: s.selectedNoteId === id ? null : s.selectedNoteId,

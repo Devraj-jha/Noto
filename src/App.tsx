@@ -102,8 +102,8 @@ function TopBar({ onNewNote, onToggleSidebar, saveStatus, selectedId, onPin, onA
   return (
     <div className="flex items-center justify-between px-3 py-2">
       <div className="flex items-center gap-1">
-        <IconBtn label="Toggle sidebar" onClick={onToggleSidebar}>☰</IconBtn>
-        <IconBtn label="New note" onClick={onNewNote}>＋</IconBtn>
+        <IconBtn label="Toggle sidebar" onClick={() => onToggleSidebar()}>☰</IconBtn>
+        <IconBtn label="New note" onClick={() => onNewNote()}>＋</IconBtn>
       </div>
 
       <SavePulse status={saveStatus} />

@@ -56,7 +56,7 @@ export function Sidebar({ onNewNote }: Props) {
             <span className="font-serif text-lg tracking-tight text-[var(--text)]">Noto</span>
           </div>
           <div className="flex items-center gap-1">
-            <IconButton label="New note" onClick={onNewNote}>＋</IconButton>
+            <IconButton label="New note" onClick={() => onNewNote()}>＋</IconButton>
             <IconButton label="Toggle theme" onClick={toggleTheme}>
               {theme === 'light' ? '☾' : '☀'}
             </IconButton>
