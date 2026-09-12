@@ -1,0 +1,108 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ---------- Design tokens ---------- */
+:root {
+  /* Light — a warm, paper-like day */
+  --bg: #faf8f4;
+  --surface: #ffffff;
+  --surface-hover: #f3efe8;
+  --border: rgba(43, 39, 36, 0.1);
+  --border-strong: rgba(43, 39, 36, 0.16);
+  --text: #2b2724;
+  --muted: #726b64;
+  --faint: #a49c92;
+  --accent: #b3563f; /* warm terracotta */
+  --accent-soft: rgba(179, 86, 63, 0.12);
+  --danger: #c24b3b;
+  --shadow: 0 1px 2px rgba(43, 39, 36, 0.05), 0 8px 24px rgba(43, 39, 36, 0.06);
+
+  --font-serif: 'Iowan Old Style', 'Palatino Linotype', Charter, 'Book Antiqua', Georgia, 'Times New Roman', serif;
+  --font-sans: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'SF Mono', 'JetBrains Mono', Menlo, Consolas, monospace;
+}
+
+:root[data-theme='dark'] {
+  /* Dark — a warm off-black, a different time of day, not inverted */
+  --bg: #211e1b;
+  --surface: #2a2622;
+  --surface-hover: #332e29;
+  --border: rgba(250, 248, 244, 0.08);
+  --border-strong: rgba(250, 248, 244, 0.16);
+  --text: #eae5dd;
+  --muted: #a89f94;
+  --faint: #726b63;
+  --accent: #d98a6f;
+  --accent-soft: rgba(217, 138, 111, 0.16);
+  --danger: #e27365;
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    transition: background 0.3s ease, color 0.3s ease;
+  }
+
+  ::selection {
+    background: var(--accent-soft);
+  }
+
+  /* Designed, calm focus ring */
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+}
+
+@layer components {
+  .hairline {
+    box-shadow: inset 0 0 0 1px var(--border);
+  }
+
+  .card-shadow {
+    box-shadow: var(--shadow);
+  }
+}
+
+/* Thin, quiet scrollbars */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-strong) transparent;
+}
+*::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+*::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 3px;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
