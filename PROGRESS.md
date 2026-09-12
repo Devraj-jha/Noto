@@ -35,7 +35,7 @@
 - [ ] Responsive design (collapsible sidebar on mobile)
 - [ ] Accessibility pass (keyboard nav, ARIA, focus states, WCAG AA)
 - [ ] Performance pass (5000+ word notes, 500+ note search)
-- [ ] prefers-reduced-motion respect
+- [x] prefers-reduced-motion respect (MotionConfig reducedMotion="user" + static pulse)
 - [ ] Micro-copy pass (warm, dry, never corporate)
 
 ## Notes

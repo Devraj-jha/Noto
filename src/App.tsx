@@ -6,7 +6,7 @@ import { SearchBar } from './components/SearchBar'
 import { Editor } from './components/Editor'
 import { CommandPalette } from './components/CommandPalette'
 import { ToastHost } from './components/ToastHost'
-import { motion } from 'framer-motion'
+import { motion, MotionConfig, useReducedMotion } from 'framer-motion'
 
 export default function App() {
   const init = useNotes((s) => s.init)
@@ -59,33 +59,35 @@ export default function App() {
   }
 
   return (
-    <div className="flex h-full overflow-hidden">
-      <Sidebar onNewNote={onNewNote} />
+    <MotionConfig reducedMotion="user">
+      <div className="flex h-full overflow-hidden">
+        <Sidebar onNewNote={onNewNote} />
 
-      {/* middle column */}
-      <div className="flex w-[300px] shrink-0 flex-col border-r border-[var(--border)] bg-[var(--bg)] md:w-[340px]">
-        <TopBar
-          onNewNote={onNewNote}
-          onToggleSidebar={toggleSidebar}
-          saveStatus={saveStatus}
-          selectedId={selectedId}
-          onPin={pinNote}
-          onArchive={toggleArchive}
-          onTrash={trashNote}
-          canDelete={!!selectedId && view !== 'trash'}
-        />
-        <SearchBar />
-        <div className="min-h-0 flex-1">
-          <NoteList />
+        {/* middle column */}
+        <div className="flex w-[300px] shrink-0 flex-col border-r border-[var(--border)] bg-[var(--bg)] md:w-[340px]">
+          <TopBar
+            onNewNote={onNewNote}
+            onToggleSidebar={toggleSidebar}
+            saveStatus={saveStatus}
+            selectedId={selectedId}
+            onPin={pinNote}
+            onArchive={toggleArchive}
+            onTrash={trashNote}
+            canDelete={!!selectedId && view !== 'trash'}
+          />
+          <SearchBar />
+          <div className="min-h-0 flex-1">
+            <NoteList />
+          </div>
         </div>
+
+        {/* editor */}
+        <Editor />
+
+        <CommandPalette />
+        <ToastHost />
       </div>
-
-      {/* editor */}
-      <Editor />
-
-      <CommandPalette />
-      <ToastHost />
-    </div>
+    </MotionConfig>
   )
 }
 
@@ -122,17 +124,19 @@ function TopBar({ onNewNote, onToggleSidebar, saveStatus, selectedId, onPin, onA
 }
 
 function SavePulse({ status }: { status: 'saved' | 'saving' }) {
+  const reduceMotion = useReducedMotion()
+  const anim = status === 'saving' && !reduceMotion
   return (
     <div className="flex items-center gap-1.5 text-[0.7rem] text-[var(--faint)]" aria-live="polite">
       <motion.span
         className="inline-block h-1.5 w-1.5 rounded-full"
         style={{ background: status === 'saving' ? 'var(--accent)' : 'var(--faint)' }}
         animate={
-          status === 'saving'
+          anim
             ? { scale: [1, 1.6, 1], opacity: [1, 0.5, 1] }
-            : { scale: 1, opacity: 0.8 }
+            : { scale: 1, opacity: status === 'saving' ? 0.9 : 0.7 }
         }
-        transition={status === 'saving' ? { duration: 1.1, repeat: Infinity, ease: 'easeInOut' } : { duration: 0.3 }}
+        transition={anim ? { duration: 1.1, repeat: Infinity, ease: 'easeInOut' } : { duration: 0.3 }}
       />
       {status === 'saving' ? 'Saving' : 'Saved'}
     </div>
