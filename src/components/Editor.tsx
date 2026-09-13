@@ -3,6 +3,7 @@ import { useNotes } from '../store/useNotes'
 import { renderBlocks } from '../lib/markdown'
 import { titleFromContent } from '../lib/utils'
 import { debounce } from '../lib/utils'
+import { wordCount, readingTimeMin } from '../lib/utils'
 import { motion } from 'framer-motion'
 
 const PAD = 20 // must match textarea padding so overlay + textarea align
@@ -57,6 +58,9 @@ export function Editor({ onBackToList }: { onBackToList: () => void }) {
   }
 
   const blocks = useMemo(() => renderBlocks(draft, searchQuery), [draft, searchQuery])
+
+  const words = useMemo(() => wordCount(draft), [draft])
+  const readTime = readingTimeMin(words)
 
   if (!note) {
     return <EditorShell><EmptyPalette /></EditorShell>
@@ -142,6 +146,12 @@ export function Editor({ onBackToList }: { onBackToList: () => void }) {
               lineHeight: '1.75',
             }}
           />
+        </div>
+
+        {/* word + reading count footer */}
+        <div className="flex items-center gap-4 border-t border-[var(--border)] px-4 py-2 text-[0.7rem] text-[var(--faint)]" aria-live="polite">
+          <span>{words.toLocaleString()} words</span>
+          <span>{readTime} min read</span>
         </div>
       </div>
     </EditorShell>

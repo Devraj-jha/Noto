@@ -54,6 +54,20 @@ export function snippetFromContent(md: string): string {
   return clean.slice(0, 140)
 }
 
+export function wordCount(md: string): number {
+  const text = md
+    .replace(/```[\s\S]*?```/g, ' ')
+    .replace(/[#*_`>~\[\]()!]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+  return text ? text.split(' ').length : 0
+}
+
+// rough reading time at 200 words per minute
+export function readingTimeMin(words: number): number {
+  return Math.max(1, Math.round(words / 200))
+}
+
 export const TRASH_WINDOW_MS = 30 * 24 * 60 * 60 * 1000 // 30 days
 
 export function isExpiredFromTrash(note: { deletedAt: number }): boolean {
