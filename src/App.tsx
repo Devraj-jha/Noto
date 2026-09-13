@@ -6,6 +6,7 @@ import { SearchBar } from './components/SearchBar'
 import { Editor } from './components/Editor'
 import { CommandPalette } from './components/CommandPalette'
 import { ToastHost } from './components/ToastHost'
+import { IconButton } from './components/IconButton'
 import { motion, MotionConfig, useReducedMotion } from 'framer-motion'
 
 export default function App() {
@@ -119,8 +120,8 @@ function TopBar({ onNewNote, onToggleSidebar, saveStatus, selectedId, onPin, onA
   return (
     <div className="flex items-center justify-between px-3 py-2">
       <div className="flex items-center gap-1">
-        <IconBtn label="Toggle sidebar" onClick={() => onToggleSidebar()}>☰</IconBtn>
-        <IconBtn label="New note" onClick={() => onNewNote()}>＋</IconBtn>
+        <IconButton label="Toggle sidebar" className="h-8 w-8" onClick={() => onToggleSidebar()}>☰</IconButton>
+        <IconButton label="New note" className="h-8 w-8" onClick={() => onNewNote()}>＋</IconButton>
       </div>
 
       <SavePulse status={saveStatus} />
@@ -128,9 +129,9 @@ function TopBar({ onNewNote, onToggleSidebar, saveStatus, selectedId, onPin, onA
       <div className="flex items-center gap-1">
         {selectedId && (
           <>
-            <IconBtn label="Pin" onClick={() => onPin(selectedId)}>✷</IconBtn>
-            <IconBtn label="Archive" onClick={() => onArchive(selectedId)}>🗕</IconBtn>
-            {canDelete && <IconBtn label="Delete" onClick={() => onTrash(selectedId)}>🗑</IconBtn>}
+            <IconButton label="Pin" className="h-8 w-8" onClick={() => onPin(selectedId)}>✷</IconButton>
+            <IconButton label="Archive" className="h-8 w-8" onClick={() => onArchive(selectedId)}>🗕</IconButton>
+            {canDelete && <IconButton label="Delete" className="h-8 w-8" onClick={() => onTrash(selectedId)}>🗑</IconButton>}
           </>
         )}
       </div>
@@ -158,15 +159,3 @@ function SavePulse({ status }: { status: 'saved' | 'saving' }) {
   )
 }
 
-function IconBtn({ label, onClick, children }: { label: string; onClick: () => void; children: React.ReactNode }) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      aria-label={label}
-      className="flex h-8 w-8 items-center justify-center rounded-lg text-[var(--muted)] transition-colors hover:bg-[var(--surface-hover)] hover:text-[var(--text)]"
-    >
-      {children}
-    </button>
-  )
-}

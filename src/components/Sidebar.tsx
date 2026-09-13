@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNotes } from '../store/useNotes'
 import { motion } from 'framer-motion'
+import { IconButton } from './IconButton'
 
 interface Props {
   onNewNote: () => void
@@ -178,15 +179,3 @@ function NavRow({ active, onClick, icon, label, count }: {
   )
 }
 
-function IconButton({ label, onClick, children }: { label: string; onClick: () => void; children: React.ReactNode }) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      aria-label={label}
-      className="flex h-7 w-7 items-center justify-center rounded-lg text-[var(--muted)] transition-colors hover:bg-[var(--surface-hover)] hover:text-[var(--text)]"
-    >
-      {children}
-    </button>
-  )
-}
