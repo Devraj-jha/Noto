@@ -265,7 +265,7 @@ export const useNotes = create<NotesState>((set, get) => {
       if (v === 'archived') list = list.filter((n) => n.archived)
       else list = list.filter((n) => (v === 'pinned' ? n.pinned : !n.archived))
 
-      if (v === 'all') {
+      if (v === 'all' || v === 'folder') {
         if (folder) list = list.filter((n) => n.folderId === folder)
         if (tag) list = list.filter((n) => n.tags.includes(tag))
       }
@@ -289,7 +289,7 @@ export const useNotes = create<NotesState>((set, get) => {
     },
 
     setSelected: (id) => set({ selectedNoteId: id, mobilePane: id ? 'editor' : 'list' }),
-    setView: (v) => set({ view: v }),
+    setView: (v) => set({ view: v, activeFolderId: null, activeTag: null }),
     setFolder: (id) => set({ activeFolderId: id, view: 'folder' }),
     setTag: (t) => set({ activeTag: t, view: 'all' }),
     setSearch: (q) => set({ searchQuery: q }),
