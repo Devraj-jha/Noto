@@ -25,6 +25,7 @@ export function Sidebar({ onNewNote }: Props) {
   const deleteFolder = useNotes((s) => s.deleteFolder)
   const notes = useNotes((s) => s.notes)
   const sidebarOpen = useNotes((s) => s.sidebarOpen)
+  const closeMobileSidebar = () => { if (sidebarOpen && window.innerWidth < 768) toggleSidebar() }
 
   const [addingFolder, setAddingFolder] = useState(false)
   const [folderName, setFolderName] = useState('')
@@ -80,7 +81,7 @@ export function Sidebar({ onNewNote }: Props) {
               <NavRow
                 key={item.key}
                 active={view === item.key && !activeFolderId && !activeTag}
-                onClick={() => { setView(item.key) }}
+                onClick={() => { setView(item.key); closeMobileSidebar() }}
                 icon={item.icon}
                 label={item.label}
                 count={item.count}
@@ -124,7 +125,7 @@ export function Sidebar({ onNewNote }: Props) {
                   folder={f}
                   count={notes.filter((n) => n.folderId === f.id && !n.deletedAt && !n.archived).length}
                   active={view === 'folder' && activeFolderId === f.id}
-                  onOpen={() => setFolder(f.id)}
+                  onOpen={() => { setFolder(f.id); closeMobileSidebar() }}
                   onRename={(name) => { if (name.trim()) renameFolder(f.id, name.trim()) }}
                   onDelete={() => deleteFolder(f.id)}
                 />
