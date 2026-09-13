@@ -9,6 +9,7 @@ export function NoteList() {
   const setSelected = useNotes((s) => s.setSelected)
   const view = useNotes((s) => s.view)
   const searchQuery = useNotes((s) => s.searchQuery)
+  const createNote = useNotes((s) => s.createNote)
 
   if (notes.length === 0) {
     return (
@@ -22,7 +23,15 @@ export function NoteList() {
                 ? 'Nothing pinned. Press ✷ on a note you never want to lose.'
                 : 'Nothing here yet.'}
         </p>
-        {!searchQuery && <p className="mt-2 text-sm text-[var(--faint)]">⌘ N to write something</p>}
+        {!searchQuery && (
+          <button
+            type="button"
+            onClick={() => createNote()}
+            className="mt-3 rounded-lg bg-[var(--accent)] px-3 py-1.5 text-sm font-medium text-white transition-opacity hover:opacity-90"
+          >
+            ＋ New note
+          </button>
+        )}
       </div>
     )
   }
