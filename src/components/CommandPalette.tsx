@@ -76,8 +76,11 @@ export function CommandPalette() {
                   }}
                 >＋ Create a new note <Shortcut>N</Shortcut></CommandItem>
                 <CommandItem
-                  onSelect={() => { setView('all'); setSearch('') }}
+                  onSelect={() => { setView('all'); setSearch(''); close() }}
                 >Show all notes</CommandItem>
+                <CommandItem onSelect={() => { setView('pinned'); close() }}>Show pinned notes</CommandItem>
+                <CommandItem onSelect={() => { setView('archived'); close() }}>Show archived notes</CommandItem>
+                <CommandItem onSelect={() => { setView('trash'); close() }}>Show trash</CommandItem>
                 <CommandItem
                   onSelect={() => {
                     setView('all')
