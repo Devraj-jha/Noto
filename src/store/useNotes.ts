@@ -223,7 +223,11 @@ export const useNotes = create<NotesState>((set, get) => {
       const note = get().notes.find((n) => n.id === id)
       if (!note) return
       const next = { ...note, archived: !note.archived }
-      set((s) => ({ notes: s.notes.map((n) => (n.id === id ? next : n)) }))
+      set((s) => ({
+        notes: s.notes.map((n) => (n.id === id ? next : n)),
+        // archiving the open note closes the editor
+        selectedNoteId: s.selectedNoteId === id ? null : s.selectedNoteId,
+      }))
       persist(next)
     },
 
