@@ -21,8 +21,12 @@ export function ToastHost() {
             transition={{ type: 'spring', stiffness: 420, damping: 32 }}
             className="pointer-events-auto flex items-center gap-3 rounded-2xl border border-[var(--border)] bg-[var(--surface)] px-4 py-3 shadow-[0_12px_40px_rgba(0,0,0,0.16)]"
           >
-            <span className={t.type === 'undo' ? 'text-[var(--accent)]' : 'text-[var(--muted)]'}>
-              {t.type === 'undo' ? '↩' : '✓'}
+            <span className={
+              t.type === 'undo' ? 'text-[var(--accent)]'
+                : t.type === 'success' ? 'text-[var(--accent)]'
+                  : 'text-[var(--muted)]'
+            }>
+              {t.type === 'undo' ? '↩' : t.type === 'success' ? '✓' : '·'}
             </span>
             <div className="flex-1 text-sm text-[var(--text)]">
               {t.message}
