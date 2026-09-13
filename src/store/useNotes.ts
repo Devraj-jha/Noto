@@ -208,7 +208,10 @@ export const useNotes = create<NotesState>((set, get) => {
     emptyTrash() {
       const trash = get().notes.filter((n) => n.deletedAt)
       trash.forEach((n) => void dbDeleteNote(n.id))
-      set((s) => ({ notes: s.notes.filter((n) => !n.deletedAt) }))
+      set((s) => ({
+        notes: s.notes.filter((n) => !n.deletedAt),
+        selectedNoteId: trash.some((n) => n.id === s.selectedNoteId) ? null : s.selectedNoteId,
+      }))
     },
 
     pinNote(id) {
