@@ -13,6 +13,7 @@ interface Props {
 export function NoteItem({ title, snippet, time, pinned, archived, deleted, tags, active, onClick }: Props) {
   return (
     <button
+      type="button"
       onClick={onClick}
       aria-pressed={active}
       className={`group mb-1 w-full rounded-xl px-3 py-2.5 text-left transition-colors ${
@@ -20,7 +21,7 @@ export function NoteItem({ title, snippet, time, pinned, archived, deleted, tags
       }`}
     >
       <div className="flex items-center gap-2">
-        <span className={`flex-1 truncate font-serif text-[1.02rem] leading-snug ${active ? 'text-[var(--text)]' : 'text-[var(--text)]'}`}>
+        <span className="flex-1 truncate font-serif text-[1.02rem] leading-snug text-[var(--text)]">
           {title || 'Untitled'}
         </span>
         <span className="shrink-0 text-[0.68rem] text-[var(--faint)]">{time}</span>
