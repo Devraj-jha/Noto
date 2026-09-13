@@ -41,6 +41,11 @@ export default function App() {
 
   const onNewNote = useCallback((folderId?: string | null) => {
     const n = createNote(folderId)
+    requestAnimationFrame(() => {
+      const el = document.getElementById('note-title') as HTMLInputElement | null
+      el?.focus()
+      el?.select()
+    })
     return n
   }, [createNote])
 

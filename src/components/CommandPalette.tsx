@@ -65,7 +65,15 @@ export function CommandPalette() {
 
                 <Section>Actions</Section>
                 <CommandItem
-                  onSelect={() => { createNote(); close() }}
+                  onSelect={() => {
+                    createNote()
+                    close()
+                    requestAnimationFrame(() => {
+                      const el = document.getElementById('note-title') as HTMLInputElement | null
+                      el?.focus()
+                      el?.select()
+                    })
+                  }}
                 >＋ Create a new note <Shortcut>N</Shortcut></CommandItem>
                 <CommandItem
                   onSelect={() => { setView('all'); setSearch('') }}
