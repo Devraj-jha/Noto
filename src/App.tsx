@@ -24,6 +24,15 @@ export default function App() {
 
   useEffect(() => { init() }, [init])
 
+  // update the document title to reflect the current note
+  const selectedNote = useNotes((s) => {
+    const id = s.selectedNoteId
+    return id ? s.notes.find((n) => n.id === id) ?? null : null
+  })
+  useEffect(() => {
+    document.title = selectedNote?.title || 'Noto — a quiet place for your thoughts'
+  }, [selectedNote?.title])
+
   const onNewNote = useCallback((folderId?: string | null) => {
     const n = createNote(folderId)
     return n
