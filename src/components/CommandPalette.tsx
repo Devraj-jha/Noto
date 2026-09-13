@@ -3,6 +3,7 @@ import { useEffect } from 'react'
 import { useNotes } from '../store/useNotes'
 import { AnimatePresence, motion } from 'framer-motion'
 import { titleFromContent } from '../lib/utils'
+import type { Note } from '../types/note'
 
 export function CommandPalette() {
   const open = useNotes((s) => s.commandOpen)
@@ -19,6 +20,7 @@ export function CommandPalette() {
   const trashNote = useNotes((s) => s.trashNote)
   const pinNote = useNotes((s) => s.pinNote)
   const toggleArchive = useNotes((s) => s.toggleArchive)
+  const pushToast = useNotes((s) => s.pushToast)
   const selectedId = useNotes((s) => s.selectedNoteId)
 
   useEffect(() => {
@@ -84,6 +86,13 @@ export function CommandPalette() {
                     <CommandItem onSelect={() => { pinNote(selectedId); close() }}>Toggle pin on selected</CommandItem>
                     <CommandItem onSelect={() => { toggleArchive(selectedId); close() }}>Archive selected</CommandItem>
                     <CommandItem onSelect={() => { trashNote(selectedId); close() }}>Delete selected</CommandItem>
+                    <CommandItem
+                      onSelect={() => {
+                        const n = notes.find((x) => x.id === selectedId)
+                        if (n) { void copyMarkdown(n); pushToast({ message: 'Copied as markdown', type: 'success' }) }
+                        close()
+                      }}
+                    >Copy note as markdown</CommandItem>
                   </>
                 )}
 
@@ -124,6 +133,15 @@ function CommandInput({ onClose }: { onClose: () => void }) {
       className="w-full bg-transparent px-4 py-3.5 text-[0.95rem] text-[var(--text)] placeholder:text-[var(--faint)] focus:outline-none"
     />
   )
+}
+
+async function copyMarkdown(n: Note) {
+  const body = [n.title && `# ${n.title}`, n.content].filter(Boolean).join('\n\n')
+  try {
+    await navigator.clipboard.writeText(body)
+  } catch {
+    // clipboard unavailable (e.g. non-secure context) — fail quietly
+  }
 }
 
 function Section({ children }: { children: React.ReactNode }) {
