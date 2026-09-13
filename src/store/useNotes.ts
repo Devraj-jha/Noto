@@ -198,7 +198,7 @@ export const useNotes = create<NotesState>((set, get) => {
     restoreNote(id) {
       const next = get().notes.map((n) => (n.id === id ? { ...n, deletedAt: null } : n))
       const restored = next.find((n) => n.id === id)
-      set({ notes: next })
+      set({ notes: next, selectedNoteId: id, mobilePane: 'editor' })
       if (restored) persist(restored)
     },
 
