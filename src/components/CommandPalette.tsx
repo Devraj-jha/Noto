@@ -78,6 +78,9 @@ export function CommandPalette() {
                 <CommandItem
                   onSelect={() => { setView('all'); setSearch(''); close() }}
                 >Show all notes</CommandItem>
+                <CommandItem onSelect={() => { backupJson(notes); pushToast({ message: 'Backup downloaded', type: 'success' }); close() }}>
+                  Back up all notes (JSON)
+                </CommandItem>
                 <CommandItem onSelect={() => { setView('pinned'); close() }}>Show pinned notes</CommandItem>
                 <CommandItem onSelect={() => { setView('archived'); close() }}>Show archived notes</CommandItem>
                 <CommandItem onSelect={() => { setView('trash'); close() }}>Show trash</CommandItem>
@@ -146,6 +149,18 @@ function CommandInput({ onClose }: { onClose: () => void }) {
       className="w-full bg-transparent px-4 py-3.5 text-[0.95rem] text-[var(--text)] placeholder:text-[var(--faint)] focus:outline-none"
     />
   )
+}
+
+function backupJson(notes: Note[]) {
+  const blob = new Blob([JSON.stringify(notes, null, 2)], { type: 'application/json' })
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement('a')
+  a.href = url
+  a.download = `noto-backup-${new Date().toISOString().slice(0, 10)}.json`
+  document.body.appendChild(a)
+  a.click()
+  a.remove()
+  URL.revokeObjectURL(url)
 }
 
 async function copyMarkdown(n: Note) {
