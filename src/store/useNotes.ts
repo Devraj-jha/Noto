@@ -119,6 +119,7 @@ export const useNotes = create<NotesState>((set, get) => {
         savedTheme = window.matchMedia?.('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
       }
       applyTheme(savedTheme)
+      const savedSort = (await getMeta('sortBy')) as SortBy | null | undefined
 
       let [notes, folders] = await Promise.all([getAllNotes(), getAllFolders()])
       const hasSeen = (await getMeta('seeded')) === true
@@ -145,6 +146,7 @@ export const useNotes = create<NotesState>((set, get) => {
         folders,
         tags: [...tagSet].sort(),
         theme: savedTheme,
+        sortBy: savedSort ?? 'updated',
         sidebarOpen: typeof window === 'undefined' ? true : window.innerWidth >= 768,
         initialized: true,
       })
@@ -339,7 +341,7 @@ export const useNotes = create<NotesState>((set, get) => {
     openCommand: (v) => set({ commandOpen: v }),
     setMobilePane: (p) => set({ mobilePane: p }),
     setSaveStatus: (s) => set({ saveStatus: s }),
-    setSortBy: (s) => set({ sortBy: s }),
+    setSortBy: (s) => { set({ sortBy: s }); void setMeta('sortBy', s) },
 
     toggleTheme() {
       const t = get().theme === 'light' ? 'dark' : 'light'
