@@ -7,7 +7,7 @@ import { motion } from 'framer-motion'
 
 const PAD = 20 // must match textarea padding so overlay + textarea align
 
-export function Editor() {
+export function Editor({ onBackToList }: { onBackToList: () => void }) {
   const note = useNotes((s) => s.notes.find((n) => n.id === s.selectedNoteId) ?? null)
   const updateNote = useNotes((s) => s.updateNote)
   const setSaveStatus = useNotes((s) => s.setSaveStatus)
@@ -67,9 +67,21 @@ export function Editor() {
       <div className="flex h-full flex-col">
         {/* meta row */}
         <div className="flex items-center gap-3 px-4 pt-5">
+          <button
+            type="button"
+            onClick={onBackToList}
+            aria-label="Back to notes"
+            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-[var(--muted)] hover:bg-[var(--surface-hover)] hover:text-[var(--text)] md:hidden"
+          >‹</button>
           <input
             value={title}
             onChange={onTitle}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                e.preventDefault()
+                taRef.current?.focus()
+              }
+            }}
             placeholder="Title"
             aria-label="Note title"
             className="flex-1 bg-transparent text-[1.4rem] font-bold leading-tight text-[var(--text)] placeholder:text-[var(--faint)] focus:outline-none"
@@ -80,7 +92,7 @@ export function Editor() {
             aria-label="Folder"
             className="rounded-lg border border-[var(--border)] bg-transparent px-2 py-1 text-sm text-[var(--muted)] focus:outline-none"
           >
-            <option value="">Inbox / no folder</option>
+            <option value="">No folder</option>
             {folders.map((f) => (
               <option key={f.id} value={f.id}>{f.name}</option>
             ))}
@@ -169,7 +181,7 @@ function EmptyPalette() {
         transition={{ duration: 0.4 }}
         className="max-w-sm"
       >
-        <p className="font-serif text-3xl text-[var(--text)]">Where do you want to write?</p>
+        <h1 className="font-serif text-3xl text-[var(--text)]">Where do you want to write?</h1>
         <p className="mt-4 leading-relaxed text-[var(--muted)]">
           Pick a note from the left, or press <kbd className="rounded-md border border-[var(--border)] bg-[var(--bg)] px-1.5 py-0.5 font-sans text-xs">⌘ N</kbd>{' '}
           to start something new.
