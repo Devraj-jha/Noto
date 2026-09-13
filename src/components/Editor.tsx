@@ -18,6 +18,7 @@ export function Editor({ onBackToList }: { onBackToList: () => void }) {
 
   const [draft, setDraft] = useState(note?.content ?? '')
   const [title, setTitleState] = useState(note?.title ?? '')
+  const [newTag, setNewTag] = useState('')
   const taRef = useRef<HTMLTextAreaElement>(null)
   const preRef = useRef<HTMLDivElement>(null)
 
@@ -25,7 +26,21 @@ export function Editor({ onBackToList }: { onBackToList: () => void }) {
   useEffect(() => {
     setDraft(note?.content ?? '')
     setTitleState(note?.title ?? '')
+    setNewTag('')
   }, [note?.id])
+
+  function addTag(raw: string) {
+    if (!note) return
+    const tag = raw.trim().replace(/^#/, '').toLowerCase().replace(/\s+/g, '-')
+    if (!tag || note.tags.includes(tag)) { setNewTag(''); return }
+    updateNote(note.id, { tags: [...note.tags, tag] })
+    setNewTag('')
+  }
+
+  function removeTag(tag: string) {
+    if (!note) return
+    updateNote(note.id, { tags: note.tags.filter((t) => t !== tag) })
+  }
 
   const persist = useMemo(
     () =>
@@ -145,6 +160,32 @@ export function Editor({ onBackToList }: { onBackToList: () => void }) {
               fontSize: '1.05rem',
               lineHeight: '1.75',
             }}
+          />
+        </div>
+
+        {/* tags */}
+        <div className="flex flex-wrap items-center gap-1.5 border-t border-[var(--border)] px-4 py-2">
+          {note.tags.map((t) => (
+            <button
+              key={t}
+              type="button"
+              onClick={() => removeTag(t)}
+              aria-label={`Remove tag ${t}`}
+              className="group flex items-center gap-1 rounded-full bg-[var(--accent-soft)] px-2.5 py-0.5 text-xs text-[var(--muted)] transition-colors hover:text-[var(--danger)]"
+            >
+              #{t}
+              <span className="text-[var(--faint)] group-hover:text-[var(--danger)]">✕</span>
+            </button>
+          ))}
+          <input
+            value={newTag}
+            onChange={(e) => setNewTag(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ',') { e.preventDefault(); addTag(newTag) }
+            }}
+            placeholder={note.tags.length ? 'Add tag…' : 'Tag this note…'}
+            aria-label="Add a tag"
+            className="min-w-[6rem] flex-1 bg-transparent text-xs text-[var(--text)] placeholder:text-[var(--faint)] focus:outline-none"
           />
         </div>
 
