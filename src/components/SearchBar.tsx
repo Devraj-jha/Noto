@@ -26,6 +26,7 @@ export function SearchBar() {
     <div className="relative flex items-center px-3 py-2">
       <span className="pointer-events-none absolute left-5 text-[var(--faint)]">⌕</span>
       <input
+        id="note-search"
         ref={inputRef}
         value={searchQuery}
         onChange={(e) => setSearch(e.target.value)}
@@ -35,6 +36,7 @@ export function SearchBar() {
       />
       {searchQuery && (
         <button
+          type="button"
           onClick={() => setSearch('')}
           aria-label="Clear search"
           className="absolute right-5 text-[var(--faint)] hover:text-[var(--text)]"

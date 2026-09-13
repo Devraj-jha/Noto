@@ -67,6 +67,16 @@ export function CommandPalette() {
                 <CommandItem
                   onSelect={() => { setView('all'); setSearch('') }}
                 >Show all notes</CommandItem>
+                <CommandItem
+                  onSelect={() => {
+                    setView('all')
+                    close()
+                    requestAnimationFrame(() => {
+                      const el = document.getElementById('note-search')
+                      if (el) (el as HTMLInputElement).focus()
+                    })
+                  }}
+                >Search notes <Shortcut>/</Shortcut></CommandItem>
                 <CommandItem onSelect={toggleTheme}>Toggle light / dark</CommandItem>
                 <CommandItem onSelect={toggleSidebar}>Toggle sidebar</CommandItem>
                 {selectedId && (
