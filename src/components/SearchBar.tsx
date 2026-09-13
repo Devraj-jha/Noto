@@ -1,10 +1,26 @@
-import { useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { useNotes } from '../store/useNotes'
 
 export function SearchBar() {
   const searchQuery = useNotes((s) => s.searchQuery)
   const setSearch = useNotes((s) => s.setSearch)
   const inputRef = useRef<HTMLInputElement>(null)
+
+  // `/` jumps to search from anywhere; `Esc` backs out of it
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      const el = e.target as HTMLElement | null
+      const typing = !!el && (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA' || el.isContentEditable)
+      if (e.key === '/' && !typing) {
+        e.preventDefault()
+        inputRef.current?.focus()
+      } else if (e.key === 'Escape' && document.activeElement === inputRef.current) {
+        inputRef.current?.blur()
+      }
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [])
 
   return (
     <div className="relative flex items-center px-3 py-2">
