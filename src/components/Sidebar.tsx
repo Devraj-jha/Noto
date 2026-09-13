@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNotes } from '../store/useNotes'
 import { motion } from 'framer-motion'
 import { IconButton } from './IconButton'
+import type { Folder } from '../types/note'
 
 interface Props {
   onNewNote: () => void
@@ -19,6 +20,8 @@ export function Sidebar({ onNewNote }: Props) {
   const theme = useNotes((s) => s.theme)
   const toggleTheme = useNotes((s) => s.toggleTheme)
   const addFolder = useNotes((s) => s.addFolder)
+  const renameFolder = useNotes((s) => s.renameFolder)
+  const deleteFolder = useNotes((s) => s.deleteFolder)
   const notes = useNotes((s) => s.notes)
   const sidebarOpen = useNotes((s) => s.sidebarOpen)
 
@@ -112,13 +115,14 @@ export function Sidebar({ onNewNote }: Props) {
             )}
             <div className="space-y-0.5">
               {folders.map((f) => (
-                <NavRow
+                <FolderRow
                   key={f.id}
-                  active={view === 'folder' && activeFolderId === f.id}
-                  onClick={() => setFolder(f.id)}
-                  icon="▱"
-                  label={f.name}
+                  folder={f}
                   count={notes.filter((n) => n.folderId === f.id && !n.deletedAt && !n.archived).length}
+                  active={view === 'folder' && activeFolderId === f.id}
+                  onOpen={() => setFolder(f.id)}
+                  onRename={(name) => { if (name.trim()) renameFolder(f.id, name.trim()) }}
+                  onDelete={() => deleteFolder(f.id)}
                 />
               ))}
             </div>
@@ -176,6 +180,47 @@ function NavRow({ active, onClick, icon, label, count }: {
       <span className="relative flex-1 truncate font-medium">{label}</span>
       {count > 0 && <span className="relative text-xs text-[var(--faint)]">{count}</span>}
     </button>
+  )
+}
+
+function FolderRow({ folder, count, active, onOpen, onRename, onDelete }: {
+  folder: Folder; count: number; active: boolean
+  onOpen: () => void; onRename: (name: string) => void; onDelete: () => void
+}) {
+  const [editing, setEditing] = useState(false)
+  const [value, setValue] = useState(folder.name)
+
+  if (editing) {
+    return (
+      <div className="flex items-center gap-1 rounded-lg px-2 py-1">
+        <input
+          autoFocus
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+          onBlur={() => { onRename(value); setEditing(false) }}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') { onRename(value); setEditing(false) }
+            if (e.key === 'Escape') { setEditing(false); setValue(folder.name) }
+          }}
+          aria-label={`Rename ${folder.name}`}
+          className="w-full rounded-md border border-[var(--border)] bg-[var(--surface)] px-2 py-1 text-sm focus:outline-none"
+        />
+      </div>
+    )
+  }
+
+  return (
+    <div className="group relative">
+      <NavRow active={active} onClick={onOpen} icon="▱" label={folder.name} count={count} />
+      <div className="absolute right-2 top-1/2 hidden -translate-y-1/2 items-center gap-0.5 rounded-md bg-[var(--surface)] p-0.5 group-hover:flex group-focus-within:flex">
+        <button type="button" aria-label={`Rename ${folder.name}`} title="Rename"
+          onClick={() => { setValue(folder.name); setEditing(true) }}
+          className="h-5 w-5 rounded text-[var(--muted)] hover:bg-[var(--surface-hover)] hover:text-[var(--text)]">✎</button>
+        <button type="button" aria-label={`Delete ${folder.name}`} title="Delete"
+          onClick={onDelete}
+          className="h-5 w-5 rounded text-[var(--muted)] hover:bg-[var(--surface-hover)] hover:text-[var(--danger)]">🗑</button>
+      </div>
+    </div>
   )
 }
 
