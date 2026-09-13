@@ -19,6 +19,8 @@ export default function App() {
   const trashNote = useNotes((s) => s.trashNote)
   const toggleArchive = useNotes((s) => s.toggleArchive)
   const view = useNotes((s) => s.view)
+  const mobilePane = useNotes((s) => s.mobilePane)
+  const setMobilePane = useNotes((s) => s.setMobilePane)
 
   useEffect(() => { init() }, [init])
 
@@ -60,11 +62,13 @@ export default function App() {
 
   return (
     <MotionConfig reducedMotion="user">
-      <div className="flex h-full overflow-hidden">
+      <div className="relative flex h-full overflow-hidden">
         <Sidebar onNewNote={onNewNote} />
 
-        {/* middle column */}
-        <div className="flex w-[300px] shrink-0 flex-col border-r border-[var(--border)] bg-[var(--bg)] md:w-[340px]">
+        {/* middle column — note list; full pane on mobile until a note is opened */}
+        <div className={`${
+          mobilePane === 'editor' ? 'hidden md:flex' : 'flex'
+        } w-[300px] shrink-0 flex-col border-r border-[var(--border)] bg-[var(--bg)] md:w-[340px]`}>
           <TopBar
             onNewNote={onNewNote}
             onToggleSidebar={toggleSidebar}
@@ -81,8 +85,10 @@ export default function App() {
           </div>
         </div>
 
-        {/* editor */}
-        <Editor />
+        {/* editor — takes over the whole screen on mobile once a note is open */}
+        <div className={`${mobilePane === 'list' ? 'hidden md:flex' : 'flex'} min-w-0 flex-1`}>
+          <Editor onBackToList={() => setMobilePane('list')} />
+        </div>
 
         <CommandPalette />
         <ToastHost />
@@ -146,6 +152,7 @@ function SavePulse({ status }: { status: 'saved' | 'saving' }) {
 function IconBtn({ label, onClick, children }: { label: string; onClick: () => void; children: React.ReactNode }) {
   return (
     <button
+      type="button"
       onClick={onClick}
       aria-label={label}
       className="flex h-8 w-8 items-center justify-center rounded-lg text-[var(--muted)] transition-colors hover:bg-[var(--surface-hover)] hover:text-[var(--text)]"
