@@ -31,6 +31,7 @@ interface NotesState {
   searchQuery: string
   sidebarOpen: boolean
   commandOpen: boolean
+  mobilePane: 'list' | 'editor'
   theme: 'light' | 'dark'
   saveStatus: SaveStatus
   toasts: Toast[]
@@ -62,6 +63,7 @@ interface NotesState {
   setSearch: (q: string) => void
   toggleSidebar: () => void
   openCommand: (v: boolean) => void
+  setMobilePane: (p: 'list' | 'editor') => void
   toggleTheme: () => void
   setSaveStatus: (s: SaveStatus) => void
 
@@ -99,6 +101,7 @@ export const useNotes = create<NotesState>((set, get) => {
     searchQuery: '',
     sidebarOpen: true,
     commandOpen: false,
+    mobilePane: 'list',
     theme: 'light',
     saveStatus: 'saved',
     toasts: [],
@@ -134,6 +137,7 @@ export const useNotes = create<NotesState>((set, get) => {
         folders,
         tags: [...tagSet].sort(),
         theme: savedTheme,
+        sidebarOpen: typeof window === 'undefined' ? true : window.innerWidth >= 768,
         initialized: true,
       })
     },
@@ -284,13 +288,14 @@ export const useNotes = create<NotesState>((set, get) => {
       })
     },
 
-    setSelected: (id) => set({ selectedNoteId: id }),
-    setView: (v) => set({ view: v, activeFolderId: v === 'folder' ? get().activeFolderId : get().activeFolderId }),
+    setSelected: (id) => set({ selectedNoteId: id, mobilePane: id ? 'editor' : 'list' }),
+    setView: (v) => set({ view: v }),
     setFolder: (id) => set({ activeFolderId: id, view: 'folder' }),
     setTag: (t) => set({ activeTag: t, view: 'all' }),
     setSearch: (q) => set({ searchQuery: q }),
     toggleSidebar: () => set((s) => ({ sidebarOpen: !s.sidebarOpen })),
     openCommand: (v) => set({ commandOpen: v }),
+    setMobilePane: (p) => set({ mobilePane: p }),
     setSaveStatus: (s) => set({ saveStatus: s }),
 
     toggleTheme() {
