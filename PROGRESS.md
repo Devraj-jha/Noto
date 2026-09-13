@@ -39,9 +39,15 @@
 - [x] Micro-copy pass (warm, dry, never corporate) — ongoing voice tightening
 
 ## Phase 6 follow-ons
-- [ ] Per-note restore + empty-trash controls in the Trash view
+- [x] Per-note restore + empty-trash controls in the Trash view
+- [x] Document title reflects the open note
+- [x] Shared IconButton component (one button, native tooltip)
+- [x] Folder rename/delete from the sidebar
+- [x] Live word count + reading time under the editor
+- [x] Palette: Search-notes jump, Copy-as-markdown, pin/archive/delete on selected
+- [x] Empty note list offers a New note button
 - [ ] Tag authoring (add tags from the editor)
-- [ ] Document title reflects the open note
+- [ ] Performance pass (5000+ word notes, 500+ note search)
 
 ## Notes
-_Pick up here when resuming — Phase 6 polish is the next slice._
+_Pick up here when resuming — tag authoring and the perf pass are the next slice._
