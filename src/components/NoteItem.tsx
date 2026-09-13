@@ -15,6 +15,7 @@ export function NoteItem({ title, snippet, time, pinned, archived, deleted, tags
     <button
       type="button"
       onClick={onClick}
+      title={title}
       aria-pressed={active}
       className={`group mb-1 w-full rounded-xl px-3 py-2.5 text-left transition-colors ${
         active ? 'bg-[var(--accent-soft)]' : 'hover:bg-[var(--surface-hover)]'
