@@ -19,7 +19,7 @@ export function NoteList() {
             : view === 'trash'
               ? 'Trash is empty. Good.'
               : view === 'pinned'
-                ? 'Nothing pinned. Press ★ on a note you never want to lose.'
+                ? 'Nothing pinned. Press ✷ on a note you never want to lose.'
                 : 'Nothing here yet.'}
         </p>
         {!searchQuery && <p className="mt-2 text-sm text-[var(--faint)]">⌘ N to write something</p>}
