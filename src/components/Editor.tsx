@@ -181,7 +181,7 @@ export function Editor({ onBackToList }: { onBackToList: () => void }) {
             value={newTag}
             onChange={(e) => setNewTag(e.target.value)}
             onKeyDown={(e) => {
-              if (e.key === 'Enter' || e.key === ',') { e.preventDefault(); addTag(newTag) }
+              if (e.key === 'Enter' || e.key === ',' || e.key === 'Tab') { e.preventDefault(); addTag(newTag) }
             }}
             placeholder={note.tags.length ? 'Add tag…' : 'Tag this note…'}
             aria-label="Add a tag"
