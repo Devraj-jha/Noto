@@ -40,6 +40,7 @@ export function SearchBar() {
       {searchQuery && (
         <button
           type="button"
+          tabIndex={-1}
           onClick={() => setSearch('')}
           aria-label="Clear search"
           className="absolute right-5 text-[var(--faint)] hover:text-[var(--text)]"
