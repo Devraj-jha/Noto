@@ -295,7 +295,7 @@ export const useNotes = create<NotesState>((set, get) => {
 
       if (q) {
         list = list.filter((n) =>
-          (n.title + '\n' + n.content).toLowerCase().includes(q)
+          (n.title + '\n' + n.content + '\n' + n.tags.join(' ')).toLowerCase().includes(q)
         )
       }
 
