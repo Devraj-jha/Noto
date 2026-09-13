@@ -32,11 +32,16 @@
 - [x] First-run welcome note (shows formatting tricks)
 
 ## Phase 6: Polish & Quality
-- [ ] Responsive design (collapsible sidebar on mobile)
-- [ ] Accessibility pass (keyboard nav, ARIA, focus states, WCAG AA)
+- [x] Responsive design — master/detail on small screens, sidebar overlays as a drawer
+- [x] Accessibility pass — real heading structure, aria-current/pressed/expanded, explicit button types, `/` + `Esc` keyboard nav, Enter drops into the note body
 - [ ] Performance pass (5000+ word notes, 500+ note search)
 - [x] prefers-reduced-motion respect (MotionConfig reducedMotion="user" + static pulse)
-- [ ] Micro-copy pass (warm, dry, never corporate)
+- [x] Micro-copy pass (warm, dry, never corporate) — ongoing voice tightening
+
+## Phase 6 follow-ons
+- [ ] Per-note restore + empty-trash controls in the Trash view
+- [ ] Tag authoring (add tags from the editor)
+- [ ] Document title reflects the open note
 
 ## Notes
 _Pick up here when resuming — Phase 6 polish is the next slice._
