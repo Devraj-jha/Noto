@@ -26,7 +26,14 @@ export function NoteList() {
         {!searchQuery && (
           <button
             type="button"
-            onClick={() => createNote()}
+            onClick={() => {
+              createNote()
+              requestAnimationFrame(() => {
+                const el = document.getElementById('note-title') as HTMLInputElement | null
+                el?.focus()
+                el?.select()
+              })
+            }}
             className="mt-3 rounded-lg bg-[var(--accent)] px-3 py-1.5 text-sm font-medium text-white transition-opacity hover:opacity-90"
           >
             ＋ New note

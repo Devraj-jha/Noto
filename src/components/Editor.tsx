@@ -93,6 +93,7 @@ export function Editor({ onBackToList }: { onBackToList: () => void }) {
             className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-[var(--muted)] hover:bg-[var(--surface-hover)] hover:text-[var(--text)] md:hidden"
           >‹</button>
           <input
+            id="note-title"
             value={title}
             onChange={onTitle}
             onKeyDown={(e) => {
