@@ -7,9 +7,10 @@ A quiet place for your thoughts. Noto is a note-taking app that gets out of the 
 - **Live markdown editing** — headings, bold, italics, code, checklists, quotes, links, rendered as you type
 - **Local, private, offline** — everything is stored in your browser's IndexedDB. No account, no sync, no tracking
 - **Autosaves as you write** — with a soft pulse as it saves
-- **Organize your way** — folders, tags, pinning, archiving, and a 30-day trash recovery window
+- **Organize your way** — folders (renameable, deletable from the sidebar), tags (author them right in the editor), pinning, archiving, and a 30-day trash recovery window
 - **Search** — full-text search across note titles and bodies; press `/` to jump to it
-- **Command palette** — press `⌘K` (or `Ctrl K`) to run anything with your keyboard
+- **Command palette** — press `⌘K` (or `Ctrl K`) to run anything, including pin/archive/delete on the open note and copy it as markdown
+- **Word count + reading time** — a quiet readout under the editor
 - **Themed** — a warm light palette for day, a warm off-black for night, respecting your system preference and `prefers-reduced-motion`
 
 ## Getting started
