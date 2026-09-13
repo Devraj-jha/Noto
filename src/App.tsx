@@ -22,6 +22,10 @@ export default function App() {
   const view = useNotes((s) => s.view)
   const mobilePane = useNotes((s) => s.mobilePane)
   const setMobilePane = useNotes((s) => s.setMobilePane)
+  const notes = useNotes((s) => s.notes)
+  const trashCount = notes.filter((n) => n.deletedAt).length
+  const emptyTrash = useNotes((s) => s.emptyTrash)
+  const pushToast = useNotes((s) => s.pushToast)
 
   useEffect(() => { init() }, [init])
 
@@ -88,6 +92,12 @@ export default function App() {
             onArchive={toggleArchive}
             onTrash={trashNote}
             canDelete={!!selectedId && view !== 'trash'}
+            view={view}
+            trashCount={trashCount}
+            onEmptyTrash={() => {
+              emptyTrash()
+              pushToast({ message: 'Trash emptied', type: 'info' })
+            }}
           />
           <SearchBar />
           <div className="min-h-0 flex-1">
@@ -107,7 +117,7 @@ export default function App() {
   )
 }
 
-function TopBar({ onNewNote, onToggleSidebar, saveStatus, selectedId, onPin, onArchive, onTrash, canDelete }: {
+function TopBar({ onNewNote, onToggleSidebar, saveStatus, selectedId, onPin, onArchive, onTrash, canDelete, view, trashCount, onEmptyTrash }: {
   onNewNote: () => void
   onToggleSidebar: () => void
   saveStatus: 'saved' | 'saving'
@@ -116,6 +126,9 @@ function TopBar({ onNewNote, onToggleSidebar, saveStatus, selectedId, onPin, onA
   onArchive: (id: string) => void
   onTrash: (id: string) => void
   canDelete: boolean
+  view: string
+  trashCount: number
+  onEmptyTrash: () => void
 }) {
   return (
     <div className="flex items-center justify-between px-3 py-2">
@@ -127,12 +140,23 @@ function TopBar({ onNewNote, onToggleSidebar, saveStatus, selectedId, onPin, onA
       <SavePulse status={saveStatus} />
 
       <div className="flex items-center gap-1">
-        {selectedId && (
-          <>
-            <IconButton label="Pin" className="h-8 w-8" onClick={() => onPin(selectedId)}>✷</IconButton>
-            <IconButton label="Archive" className="h-8 w-8" onClick={() => onArchive(selectedId)}>🗕</IconButton>
-            {canDelete && <IconButton label="Delete" className="h-8 w-8" onClick={() => onTrash(selectedId)}>🗑</IconButton>}
-          </>
+        {view === 'trash' ? (
+          <button
+            type="button"
+            onClick={onEmptyTrash}
+            disabled={trashCount === 0}
+            className="rounded-lg px-2 py-1 text-xs font-medium text-[var(--danger)] transition-colors hover:bg-[var(--surface-hover)] disabled:cursor-not-allowed disabled:text-[var(--faint)] disabled:hover:bg-transparent"
+          >
+            Empty trash
+          </button>
+        ) : (
+          selectedId && (
+            <>
+              <IconButton label="Pin" className="h-8 w-8" onClick={() => onPin(selectedId)}>✷</IconButton>
+              <IconButton label="Archive" className="h-8 w-8" onClick={() => onArchive(selectedId)}>🗕</IconButton>
+              {canDelete && <IconButton label="Delete" className="h-8 w-8" onClick={() => onTrash(selectedId)}>🗑</IconButton>}
+            </>
+          )
         )}
       </div>
     </div>
