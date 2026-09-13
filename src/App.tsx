@@ -25,6 +25,7 @@ export default function App() {
   const notes = useNotes((s) => s.notes)
   const trashCount = notes.filter((n) => n.deletedAt).length
   const emptyTrash = useNotes((s) => s.emptyTrash)
+  const restoreNote = useNotes((s) => s.restoreNote)
   const pushToast = useNotes((s) => s.pushToast)
 
   useEffect(() => { init() }, [init])
@@ -98,6 +99,10 @@ export default function App() {
               emptyTrash()
               pushToast({ message: 'Trash emptied', type: 'info' })
             }}
+            onRestore={(id) => {
+              restoreNote(id)
+              pushToast({ message: 'Note restored', type: 'success' })
+            }}
           />
           <SearchBar />
           <div className="min-h-0 flex-1">
@@ -129,6 +134,7 @@ function TopBar({ onNewNote, onToggleSidebar, saveStatus, selectedId, onPin, onA
   view: string
   trashCount: number
   onEmptyTrash: () => void
+  onRestore: (id: string) => void
 }) {
   return (
     <div className="flex items-center justify-between px-3 py-2">
