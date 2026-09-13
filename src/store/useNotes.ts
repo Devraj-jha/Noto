@@ -109,7 +109,10 @@ export const useNotes = create<NotesState>((set, get) => {
 
     async init() {
       if (get().initialized) return
-      const savedTheme = (await getMeta('theme')) ?? 'light'
+      let savedTheme = (await getMeta('theme')) as 'light' | 'dark' | null | undefined
+      if (!savedTheme) {
+        savedTheme = window.matchMedia?.('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+      }
       applyTheme(savedTheme)
 
       let [notes, folders] = await Promise.all([getAllNotes(), getAllFolders()])
