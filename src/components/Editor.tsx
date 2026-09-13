@@ -77,8 +77,10 @@ export function Editor({ onBackToList }: { onBackToList: () => void }) {
   const words = useMemo(() => wordCount(draft), [draft])
   const readTime = readingTimeMin(words)
 
+  const createNote = useNotes((s) => s.createNote)
+
   if (!note) {
-    return <EditorShell><EmptyPalette /></EditorShell>
+    return <EditorShell><EmptyPalette onNew={() => createNote()} /></EditorShell>
   }
 
   return (
@@ -224,7 +226,7 @@ function Background() {
   )
 }
 
-function EmptyPalette() {
+function EmptyPalette({ onNew }: { onNew: () => void }) {
   return (
     <div className="flex h-full flex-col items-center justify-center px-8 text-center">
       <motion.div
@@ -238,6 +240,13 @@ function EmptyPalette() {
           Pick a note from the left, or press <kbd className="rounded-md border border-[var(--border)] bg-[var(--bg)] px-1.5 py-0.5 font-sans text-xs">⌘ N</kbd>{' '}
           to start something new.
         </p>
+        <button
+          type="button"
+          onClick={onNew}
+          className="mt-6 rounded-lg bg-[var(--accent)] px-4 py-2 text-sm font-medium text-white transition-opacity hover:opacity-90"
+        >
+          ＋ New note
+        </button>
       </motion.div>
     </div>
   )
