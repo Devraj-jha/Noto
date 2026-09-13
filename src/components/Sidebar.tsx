@@ -153,8 +153,8 @@ export function Sidebar({ onNewNote }: Props) {
           )}
         </div>
 
-        <div className="border-t border-[var(--border)] px-4 py-2 text-[0.7rem] text-[var(--faint)]">
-          ⌘ K command · ⌘ N new note
+        <div className="border-t border-[var(--border)] px-4 py-2 text-[0.7rem] leading-relaxed text-[var(--faint)]">
+          ⌘ K command · ⌘ N new note · ⌘ \ hide this
         </div>
       </div>
     </motion.aside>
