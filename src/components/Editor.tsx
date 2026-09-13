@@ -1,9 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useNotes } from '../store/useNotes'
 import { renderBlocks } from '../lib/markdown'
-import { titleFromContent } from '../lib/utils'
-import { debounce } from '../lib/utils'
-import { wordCount, readingTimeMin } from '../lib/utils'
+import { titleFromContent, debounce, wordCount, readingTimeMin } from '../lib/utils'
 import { motion } from 'framer-motion'
 
 const PAD = 20 // must match textarea padding so overlay + textarea align
