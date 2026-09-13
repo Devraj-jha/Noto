@@ -32,6 +32,9 @@ export function SearchBar() {
         onChange={(e) => setSearch(e.target.value)}
         placeholder="Search notes…"
         aria-label="Search notes"
+        spellCheck={false}
+        autoCorrect="off"
+        autoCapitalize="off"
         className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] py-2 pl-9 pr-3 text-sm text-[var(--text)] placeholder:text-[var(--faint)] focus:outline-none focus:border-[var(--border-strong)]"
       />
       {searchQuery && (
