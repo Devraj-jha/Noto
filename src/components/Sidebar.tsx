@@ -46,7 +46,7 @@ export function Sidebar({ onNewNote }: Props) {
       initial={false}
       animate={{ width: sidebarOpen ? 264 : 0, opacity: sidebarOpen ? 1 : 0 }}
       transition={{ duration: 0.28, ease: [0.32, 0, 0.15, 1] }}
-      className="relative z-20 shrink-0 overflow-hidden border-r border-[var(--border)] bg-[var(--bg)]"
+      className="absolute inset-y-0 left-0 z-30 shrink-0 overflow-hidden border-r border-[var(--border)] bg-[var(--bg)] shadow-[var(--shadow)] md:static md:shadow-none"
     >
       <div className="flex h-full w-[264px] flex-col" style={{ minWidth: 264 }}>
         {/* brand + actions */}
@@ -72,7 +72,7 @@ export function Sidebar({ onNewNote }: Props) {
               <NavRow
                 key={item.key}
                 active={view === item.key && !activeFolderId && !activeTag}
-                onClick={() => { setView(item.key); setFolder(null); setTag(null) }}
+                onClick={() => { setView(item.key) }}
                 icon={item.icon}
                 label={item.label}
                 count={item.count}
@@ -84,11 +84,19 @@ export function Sidebar({ onNewNote }: Props) {
           <div className="mt-5">
             <p className="flex items-center justify-between px-2 pb-1.5 text-[0.68rem] font-semibold uppercase tracking-[0.14em] text-[var(--faint)]">
               Folders
-              <button onClick={() => setAddingFolder((v) => !v)} className="text-[var(--muted)] hover:text-[var(--text)]" aria-label="Add folder">＋</button>
+              <button
+                type="button"
+                onClick={() => setAddingFolder((v) => !v)}
+                aria-label="Add folder"
+                aria-expanded={addingFolder}
+                aria-controls="folder-name-input"
+                className="text-[var(--muted)] hover:text-[var(--text)]"
+              >＋</button>
             </p>
             {addingFolder && (
               <div className="mb-1 flex items-center gap-1 px-1">
                 <input
+                  id="folder-name-input"
                   autoFocus
                   value={folderName}
                   onChange={(e) => setFolderName(e.target.value)}
@@ -123,7 +131,9 @@ export function Sidebar({ onNewNote }: Props) {
                 {tags.map((t) => (
                   <button
                     key={t}
+                    type="button"
                     onClick={() => setTag(activeTag === t ? null : t)}
+                    aria-pressed={activeTag === t}
                     className={`rounded-full px-2.5 py-0.5 text-xs transition-colors ${
                       activeTag === t
                         ? 'bg-[var(--accent)] text-white'
@@ -151,7 +161,9 @@ function NavRow({ active, onClick, icon, label, count }: {
 }) {
   return (
     <button
+      type="button"
       onClick={onClick}
+      aria-current={active ? 'page' : undefined}
       className={`group relative flex w-full items-center gap-2.5 rounded-lg px-2 py-1.5 text-left text-sm transition-colors ${
         active ? 'text-[var(--text)]' : 'text-[var(--muted)] hover:bg-[var(--surface-hover)] hover:text-[var(--text)]'
       }`}
@@ -169,6 +181,7 @@ function NavRow({ active, onClick, icon, label, count }: {
 function IconButton({ label, onClick, children }: { label: string; onClick: () => void; children: React.ReactNode }) {
   return (
     <button
+      type="button"
       onClick={onClick}
       aria-label={label}
       className="flex h-7 w-7 items-center justify-center rounded-lg text-[var(--muted)] transition-colors hover:bg-[var(--surface-hover)] hover:text-[var(--text)]"
