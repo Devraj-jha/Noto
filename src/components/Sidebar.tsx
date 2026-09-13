@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNotes } from '../store/useNotes'
 import { motion } from 'framer-motion'
 import { IconButton } from './IconButton'
+import { wordCount } from '../lib/utils'
 import type { Folder } from '../types/note'
 
 interface Props {
@@ -30,6 +31,9 @@ export function Sidebar({ onNewNote }: Props) {
 
   const count = (pred: (n: (typeof notes)[number]) => boolean) =>
     notes.filter((n) => !n.deletedAt && pred(n)).length
+
+  const alive = notes.filter((n) => !n.deletedAt)
+  const totalWords = alive.reduce((sum, n) => sum + wordCount(n.content), 0)
 
   const navItems = [
     { key: 'all' as const, label: 'All Notes', icon: '◈', count: notes.filter((n) => !n.deletedAt && !n.archived && !n.pinned).length + count((n) => n.pinned) },
@@ -155,6 +159,9 @@ export function Sidebar({ onNewNote }: Props) {
 
         <div className="border-t border-[var(--border)] px-4 py-2 text-[0.7rem] leading-relaxed text-[var(--faint)]">
           ⌘ K command · ⌘ N new note · ⌘ \ hide this
+        </div>
+        <div className="border-t border-[var(--border)] px-4 py-2 text-[0.68rem] text-[var(--faint)]">
+          {alive.length} note{alive.length === 1 ? '' : 's'} · {totalWords.toLocaleString()} words
         </div>
       </div>
     </motion.aside>
