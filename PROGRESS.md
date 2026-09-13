@@ -46,7 +46,13 @@
 - [x] Live word count + reading time under the editor
 - [x] Palette: Search-notes jump, Copy-as-markdown, pin/archive/delete on selected
 - [x] Empty note list offers a New note button
-- [ ] Tag authoring (add tags from the editor)
+- [x] Tag authoring (add tags from the editor, Enter/comma/Tab to commit)
+- [x] Sort the list by updated, created, or title
+- [x] Highlight the matching text while searching (incl. tag names)
+- [x] Duplicate the open note from the palette
+- [x] New notes land with focus in the title
+- [x] Sidebar stats and shortcut hints; folder delete falls back to All Notes
+- [x] Archiving or emptying-trash the open note closes the editor
 - [ ] Performance pass (5000+ word notes, 500+ note search)
 
 ## Notes
