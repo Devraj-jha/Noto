@@ -279,7 +279,9 @@ export const useNotes = create<NotesState>((set, get) => {
       set((s) => ({
         folders: s.folders.filter((f) => f.id !== id),
         notes: s.notes.map((n) => (n.folderId === id ? { ...n, folderId: null } : n)),
+        // falling back from an active folder selector to all notes
         activeFolderId: s.activeFolderId === id ? null : s.activeFolderId,
+        view: s.activeFolderId === id && s.view === 'folder' ? 'all' : s.view,
       }))
     },
 
