@@ -5,10 +5,11 @@ import {
   getMeta, setMeta,
 } from '../db/indexeddb'
 import type { Note, Folder, Tag, ViewFilter } from '../types/note'
-import { uid, isExpiredFromTrash } from '../lib/utils'
+import { uid, isExpiredFromTrash, titleFromContent } from '../lib/utils'
 import { WELCOME_NOTE, DEFAULT_FOLDERS } from '../data/welcomeNote'
 
 export type SaveStatus = 'saved' | 'saving'
+export type SortBy = 'updated' | 'created' | 'title'
 
 interface Toast {
   id: string
@@ -34,6 +35,7 @@ interface NotesState {
   mobilePane: 'list' | 'editor'
   theme: 'light' | 'dark'
   saveStatus: SaveStatus
+  sortBy: SortBy
   toasts: Toast[]
   lastNoteContent: string // for undo of edits
 
@@ -67,6 +69,7 @@ interface NotesState {
   setMobilePane: (p: 'list' | 'editor') => void
   toggleTheme: () => void
   setSaveStatus: (s: SaveStatus) => void
+  setSortBy: (s: SortBy) => void
 
   pushToast: (t: Omit<Toast, 'id'>) => void
   dismissToast: (id: string) => void
@@ -105,6 +108,7 @@ export const useNotes = create<NotesState>((set, get) => {
     mobilePane: 'list',
     theme: 'light',
     saveStatus: 'saved',
+    sortBy: 'updated',
     toasts: [],
     lastNoteContent: '',
 
@@ -299,8 +303,14 @@ export const useNotes = create<NotesState>((set, get) => {
         )
       }
 
-      const pinnedFirst = (a: Note, b: Note) => Number(b.pinned) - Number(a.pinned) || b.updatedAt - a.updatedAt
-      return list.sort(pinnedFirst)
+      const by = get().sortBy
+      const cmp: (a: Note, b: Note) => number =
+        by === 'title'
+          ? (a, b) => (a.title || titleFromContent(a.content)).localeCompare(b.title || titleFromContent(b.content))
+          : by === 'created'
+            ? (a, b) => b.createdAt - a.createdAt
+            : (a, b) => b.updatedAt - a.updatedAt
+      return list.sort((a, b) => Number(b.pinned) - Number(a.pinned) || cmp(a, b))
     },
 
     visibleTags() {
@@ -320,6 +330,7 @@ export const useNotes = create<NotesState>((set, get) => {
     openCommand: (v) => set({ commandOpen: v }),
     setMobilePane: (p) => set({ mobilePane: p }),
     setSaveStatus: (s) => set({ saveStatus: s }),
+    setSortBy: (s) => set({ sortBy: s }),
 
     toggleTheme() {
       const t = get().theme === 'light' ? 'dark' : 'light'

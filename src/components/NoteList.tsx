@@ -1,4 +1,5 @@
 import { useNotes } from '../store/useNotes'
+import type { SortBy } from '../store/useNotes'
 import { NoteItem } from './NoteItem'
 import { formatRelativeTime, snippetFromContent, titleFromContent } from '../lib/utils'
 import { AnimatePresence, motion } from 'framer-motion'
@@ -10,6 +11,8 @@ export function NoteList() {
   const view = useNotes((s) => s.view)
   const searchQuery = useNotes((s) => s.searchQuery)
   const createNote = useNotes((s) => s.createNote)
+  const sortBy = useNotes((s) => s.sortBy)
+  const setSortBy = useNotes((s) => s.setSortBy)
 
   if (notes.length === 0) {
     return (
@@ -45,6 +48,18 @@ export function NoteList() {
 
   return (
     <div className="h-full overflow-y-auto px-2 pb-6">
+      <div className="flex items-center justify-end px-2 pb-1 pt-1">
+        <select
+          value={sortBy}
+          onChange={(e) => setSortBy(e.target.value as SortBy)}
+          aria-label="Sort notes"
+          className="rounded-md border-none bg-transparent text-[0.68rem] text-[var(--faint)] focus:outline-none"
+        >
+          <option value="updated">Recently updated</option>
+          <option value="created">Recently created</option>
+          <option value="title">A → Z</option>
+        </select>
+      </div>
       <AnimatePresence initial={false}>
         {notes.map((n) => {
           const active = n.id === selectedId
