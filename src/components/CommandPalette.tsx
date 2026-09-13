@@ -149,7 +149,8 @@ function CommandInput({ onClose }: { onClose: () => void }) {
 }
 
 async function copyMarkdown(n: Note) {
-  const body = [n.title && `# ${n.title}`, n.content].filter(Boolean).join('\n\n')
+  let body = [n.title && `# ${n.title}`, n.content].filter(Boolean).join('\n\n')
+  if (n.tags.length) body += `\n\n${n.tags.map((t) => `#${t}`).join(' ')}`
   try {
     await navigator.clipboard.writeText(body)
   } catch {
