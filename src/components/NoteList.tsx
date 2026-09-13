@@ -81,6 +81,7 @@ export function NoteList() {
                 deleted={!!n.deletedAt}
                 tags={n.tags}
                 active={active}
+                query={searchQuery}
                 onClick={() => setSelected(n.id)}
               />
             </motion.div>
