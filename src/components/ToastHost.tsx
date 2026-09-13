@@ -30,13 +30,14 @@ export function ToastHost() {
             </div>
             {t.action && (
               <button
+                type="button"
                 onClick={() => { t.action?.run(); dismiss(t.id) }}
                 className="shrink-0 rounded-lg bg-[var(--accent-soft)] px-2.5 py-1 text-xs font-medium text-[var(--accent)] hover:bg-[var(--accent)] hover:text-white"
               >
                 {t.action.label}
               </button>
             )}
-            <button onClick={() => dismiss(t.id)} aria-label="Dismiss" className="text-[var(--faint)] hover:text-[var(--text)]">✕</button>
+            <button type="button" onClick={() => dismiss(t.id)} aria-label="Dismiss" className="text-[var(--faint)] hover:text-[var(--text)]">✕</button>
           </motion.div>
         ))}
       </AnimatePresence>
