@@ -61,10 +61,13 @@ export default function App() {
         e.preventDefault()
         toggleSidebar()
       }
+      if (e.key === 'Escape' && mobilePane === 'editor') {
+        setMobilePane('list')
+      }
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [onNewNote, toggleSidebar])
+  }, [onNewNote, toggleSidebar, setMobilePane, mobilePane])
 
   if (!initialized) {
     return (
