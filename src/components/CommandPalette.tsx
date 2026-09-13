@@ -20,6 +20,7 @@ export function CommandPalette() {
   const trashNote = useNotes((s) => s.trashNote)
   const pinNote = useNotes((s) => s.pinNote)
   const toggleArchive = useNotes((s) => s.toggleArchive)
+  const duplicateNote = useNotes((s) => s.duplicateNote)
   const pushToast = useNotes((s) => s.pushToast)
   const selectedId = useNotes((s) => s.selectedNoteId)
 
@@ -84,6 +85,7 @@ export function CommandPalette() {
                 {selectedId && (
                   <>
                     <CommandItem onSelect={() => { pinNote(selectedId); close() }}>Toggle pin on selected</CommandItem>
+                    <CommandItem onSelect={() => { duplicateNote(selectedId); close() }}>Duplicate selected</CommandItem>
                     <CommandItem onSelect={() => { toggleArchive(selectedId); close() }}>Archive selected</CommandItem>
                     <CommandItem onSelect={() => { trashNote(selectedId); close() }}>Delete selected</CommandItem>
                     <CommandItem

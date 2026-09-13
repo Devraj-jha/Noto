@@ -45,6 +45,7 @@ interface NotesState {
   deleteNoteForever: (id: string) => void
   emptyTrash: () => void
   pinNote: (id: string) => void
+  duplicateNote: (id: string) => void
   toggleArchive: (id: string) => void
   moveToFolder: (id: string, folderId: string | null) => void
 
@@ -220,6 +221,25 @@ export const useNotes = create<NotesState>((set, get) => {
       const next = { ...note, archived: !note.archived }
       set((s) => ({ notes: s.notes.map((n) => (n.id === id ? next : n)) }))
       persist(next)
+    },
+
+    duplicateNote(id) {
+      const src = get().notes.find((n) => n.id === id)
+      if (!src) return
+      const now = Date.now()
+      const copy: Note = {
+        ...src,
+        id: uid(),
+        title: src.title ? `Copy of ${src.title}` : src.title,
+        content: src.content,
+        pinned: false,
+        archived: false,
+        deletedAt: null,
+        createdAt: now,
+        updatedAt: now,
+      }
+      set((s) => ({ notes: [copy, ...s.notes], selectedNoteId: copy.id }))
+      persist(copy)
     },
 
     moveToFolder(id, folderId) {
