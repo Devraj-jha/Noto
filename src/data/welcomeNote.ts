@@ -36,7 +36,7 @@ And a place to put things that don't fit anywhere else: [a link out](https://exa
 
 ---
 
-There's no tour here, because there's nothing to learn. Type \`# a heading\`, hit **Ctrl/⌘ K** whenever, and start with **Ctrl/⌘ N**. The rest will feel obvious.
+There's no tour here, because there's nothing to learn. Type \`# a heading\`, hit **⌘ K** for commands, **⌘ N** for a new note, or press **/** to search. A word count and reading time sit at the bottom of this pane, if you like that sort of thing. The rest will feel obvious.
 
 You can pin this note, put it in a folder, or tag it. Or just leave it here. It'll be fine.
 `,
